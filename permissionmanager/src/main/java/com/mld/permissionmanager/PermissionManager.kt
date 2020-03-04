@@ -230,7 +230,8 @@ class PermissionManager(private val context: Context) {
         val permissionsData = requestPermissionsDataMap.get(requestCode)
         requestPermissionsDataMap.remove(requestCode)
         if (permissionsData != null) {
-            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            val isGranted = isGrantedPermissions(permissions)
+            if (grantResults.isNotEmpty() && isGranted) {
                 permissionsData.onGranted.invoke()
             } else {
                 if(!permissions.isEmpty()){
@@ -255,7 +256,8 @@ class PermissionManager(private val context: Context) {
         val permissionsData = requestPermissionsDataMap.get(requestCode)
         requestPermissionsDataMap.remove(requestCode)
         if (permissionsData != null) {
-            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            val isGranted = isGrantedPermissions(permissions)
+            if (grantResults.isNotEmpty() && isGranted) {
                 permissionsData.onGranted.invoke()
             } else {
                 if(!permissions.isEmpty()) {
@@ -270,7 +272,7 @@ class PermissionManager(private val context: Context) {
         }
     }
 
-    private fun isGrantedPermissions(permissions: Array<String>): Boolean {
+    private fun isGrantedPermissions(permissions: Array<out String>): Boolean {
         var isGranted = true
         for (permission in permissions) {
             isGranted = isGranted && ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
