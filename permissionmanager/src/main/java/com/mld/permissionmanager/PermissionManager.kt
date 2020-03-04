@@ -235,11 +235,13 @@ class PermissionManager(private val context: Context) {
                 permissionsData.onGranted.invoke()
             } else {
                 if(!permissions.isEmpty()){
-                    val permission = permissions[0]
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
-                        permissionsData.onRefused?.invoke()
-                    } else {
-                        permissionsData.onAlwaysDeny?.invoke()
+                    val permission = getFirstRefusedPermission(permissions)
+                    permission?.let {
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+                            permissionsData.onRefused?.invoke()
+                        } else {
+                            permissionsData.onAlwaysDeny?.invoke()
+                        }
                     }
                 }
             }
@@ -261,15 +263,26 @@ class PermissionManager(private val context: Context) {
                 permissionsData.onGranted.invoke()
             } else {
                 if(!permissions.isEmpty()) {
-                    val permission = permissions[0]
-                    if (fragment.shouldShowRequestPermissionRationale(permission)) {
-                        permissionsData.onRefused?.invoke()
-                    } else {
-                        permissionsData.onAlwaysDeny?.invoke()
+                    val permission = getFirstRefusedPermission(permissions)
+                    permission?.let {
+                        if (fragment.shouldShowRequestPermissionRationale(permission)) {
+                            permissionsData.onRefused?.invoke()
+                        } else {
+                            permissionsData.onAlwaysDeny?.invoke()
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun getFirstRefusedPermission(permissions: Array<out String>) : String? {
+        for (permission in permissions) {
+           if(ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+               return permission
+           }
+        }
+        return null
     }
 
     private fun isGrantedPermissions(permissions: Array<out String>): Boolean {
