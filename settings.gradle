@@ -1,0 +1,3 @@
+rootProject.name='PermissionManagerSample'
+include ':app'
+include ':permissionmanager'

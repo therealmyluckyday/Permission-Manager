@@ -1,0 +1,11 @@
+<resources>
+
+    <!-- Permissions -->
+
+    <string name="permission_default_explanation">L\'application a besoin de ton autorisation pour accéder à cette fonctionnalité.</string>
+    <string name="permission_default_always_deny">L\'application a besoin de ton autorisation pour accéder à cette fonctionnalité.\nMerci d\'accepter cette permission manuellement.</string>
+
+    <!-- endregion -->
+
+
+</resources>
