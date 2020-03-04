@@ -12,11 +12,10 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
-
 const val ENABLE_BT_REQUEST_CODE = 101
 const val ENABLE_LOCATION_REQUEST_CODE = 102
 
-class PermissionManager(val context: Context) {
+class PermissionManager(private val context: Context) {
 
     val locationBackgroundPermission = Manifest.permission.ACCESS_BACKGROUND_LOCATION
     val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION
@@ -31,6 +30,8 @@ class PermissionManager(val context: Context) {
 
     private val requestPermissionsDataMap = mutableMapOf<Int, RequestPermissionData>()
 
+
+    /** For Activities **/
     fun executeFunctionWithPermissionNeeded(
         activity: Activity,
         permission: String,
@@ -51,7 +52,7 @@ class PermissionManager(val context: Context) {
         )
 
     }
-
+    /** For Fragments **/
     fun executeFunctionWithPermissionNeeded(
         fragment: Fragment,
         permission: String,
@@ -73,6 +74,7 @@ class PermissionManager(val context: Context) {
 
     }
 
+    /** For Activities with permission Array **/
     fun executeFunctionWithPermissionNeeded(
         activity: Activity,
         permissions: Array<String>,
@@ -104,6 +106,7 @@ class PermissionManager(val context: Context) {
         )
     }
 
+    /** For Fragments with permission Array **/
     fun executeFunctionWithPermissionNeeded(
         fragment: Fragment,
         permissions: Array<String>,
@@ -135,7 +138,7 @@ class PermissionManager(val context: Context) {
         )
     }
 
-    fun executeFunctionWithPermissionNeeded(
+    private fun executeFunctionWithPermissionNeeded(
         activity: Activity,
         permissions: Array<String>,
         onGranted: () -> Unit,
@@ -157,7 +160,7 @@ class PermissionManager(val context: Context) {
         }
     }
 
-    fun executeFunctionWithPermissionNeeded(
+    private fun executeFunctionWithPermissionNeeded(
         fragment: Fragment,
         permissions: Array<String>,
         onGranted: () -> Unit,
@@ -217,6 +220,7 @@ class PermissionManager(val context: Context) {
         ActivityCompat.requestPermissions(activity, permissions, requestCode)
     }
 
+    /** Result for Activity **/
     fun onRequestPermissionsResult(
         activity: Activity,
         requestCode: Int,
@@ -241,6 +245,7 @@ class PermissionManager(val context: Context) {
         }
     }
 
+    /** Result for Fragment **/
     fun onRequestPermissionsResult(
         fragment: Fragment,
         requestCode: Int,
@@ -265,7 +270,7 @@ class PermissionManager(val context: Context) {
         }
     }
 
-    fun isGrantedPermissions(permissions: Array<String>): Boolean {
+    private fun isGrantedPermissions(permissions: Array<String>): Boolean {
         var isGranted = true
         for (permission in permissions) {
             isGranted = isGranted && ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
