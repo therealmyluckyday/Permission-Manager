@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.Settings
+import androidx.annotation.StyleRes
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -15,7 +16,7 @@ import androidx.fragment.app.Fragment
 const val ENABLE_BT_REQUEST_CODE = 101
 const val ENABLE_LOCATION_REQUEST_CODE = 102
 
-class PermissionManager(private val context: Context) {
+class PermissionManager(private val context: Context, @StyleRes private val theme : Int) {
 
     val locationBackgroundPermission = Manifest.permission.ACCESS_BACKGROUND_LOCATION
     val locationPermission = Manifest.permission.ACCESS_FINE_LOCATION
@@ -299,7 +300,7 @@ class PermissionManager(private val context: Context) {
         onAcceptClick: () -> Unit,
         onRefusedClick: (() -> Unit)? = null
     ) {
-        AlertDialog.Builder(activity)
+        AlertDialog.Builder(activity, theme)
             .setMessage(explanation)
             .setPositiveButton(android.R.string.yes) { dialog, which ->
                 onAcceptClick()
@@ -311,7 +312,7 @@ class PermissionManager(private val context: Context) {
     }
 
     private fun showRefusedPermissionDialog(fragment: Fragment, explanation: String, onAcceptClick: () -> Unit, onRefusedClick: (() -> Unit)? = null) {
-        AlertDialog.Builder(fragment.requireContext())
+        AlertDialog.Builder(fragment.requireContext(), theme)
             .setMessage(explanation)
             .setPositiveButton(android.R.string.yes) { dialog, which ->
                 onAcceptClick()
@@ -324,7 +325,7 @@ class PermissionManager(private val context: Context) {
 
     private fun showAlwaysDenyPermissionDialog(context: Context, explanation: String, onRefused: (() -> Unit)? = null) {
 
-        AlertDialog.Builder(context)
+        AlertDialog.Builder(context, theme)
             .setMessage(explanation)
             .setPositiveButton(android.R.string.yes) { dialog, which ->
                 val intent = Intent()
