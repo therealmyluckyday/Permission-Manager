@@ -286,7 +286,7 @@ class PermissionManager(private val context: Context, @StyleRes private val them
         return null
     }
 
-    private fun isGrantedPermissions(permissions: Array<out String>): Boolean {
+    fun isGrantedPermissions(permissions: Array<out String>): Boolean {
         var isGranted = true
         for (permission in permissions) {
             isGranted = isGranted && ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
